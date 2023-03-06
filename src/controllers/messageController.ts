@@ -6,7 +6,7 @@ export const getChatMessages = async (req: Request, res: Response) => {
   try {
     const messages = await ChatMessageModel.find({ roomId })
     .sort({ _id: -1 })
-    .limit(10)
+    .limit(30);
     res.status(200).json(messages);
   } catch (error) {
     console.error(error);

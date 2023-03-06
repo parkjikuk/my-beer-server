@@ -7,9 +7,9 @@ export const getLikedBeer = async(req: Request, res: Response) => {
     const user = await User.findOne({ email });
     if(user) {
       return res.json({msg: "success", beers: user.likedBeers});
-    } else return res.json({msg: "User with given email not found"});
+    } else return res.json({msg: "사용자 메일을 찾을 수 없습니다"});
   } catch (error) {
-    return res.json({msg: "Error fetching beers"});
+    return res.json({msg: "맥주를 가져오는데 실패하였습니다"});
   } 
 };
 
@@ -28,13 +28,21 @@ export const addToLikedBeers = async (req: Request, res: Response) => {
           },
           { new: true}
         );
-      } else return res.json({ msg: "Beer already added to the liked list"});
-    } else await User.create({ email, likedBeers: [data] });
-    return res.json({ msg: "Beer successfully added to liked list"});
+        return res.status(200).json({ msg: "맥주를 성공적으로 좋아요 목록에 추가하였습니다"});
+      } else {
+        return res.status(400).json({ msg: "이미 찜한 맥주입니다"});
+      }
+    } else {
+      await User.create({ email, likedBeers: [data] });
+      return res.status(200).json({ msg: "맥주를 성공적으로 좋아요 목록에 추가하였습니다"});
+    }
   } catch (error) {
-    return res.json({ msg: "Error adding beer to the liked list"});
+    console.error(error);
+    return res.status(500).json({ msg: "좋아요 목록에 추가하는 도중 오류가 발생하였습니다"});
+
   }
 };
+
 
 export const  removeFromLikedBeers = async(req: Request, res: Response) => {
   try {
@@ -43,8 +51,9 @@ export const  removeFromLikedBeers = async(req: Request, res: Response) => {
     if(user) {
       const beers = user.likedBeers;
       const beerIndex = beers.findIndex(({ id }) => id === beerId);
-      if(!beerIndex) {
-        res.status(400).send({ msg: "Beer not found"});
+      if(beerIndex === -1) {
+        res.status(400).json({ msg: "맥주를 찾을 수 없습니다"});
+        return;
       }
       beers.splice(beerIndex, 1);
       await User.findByIdAndUpdate(
@@ -54,9 +63,9 @@ export const  removeFromLikedBeers = async(req: Request, res: Response) => {
         },
         { new: true }
       );
-      return res.json({ msg: "Beer successfully removed", beers});
-    } else return res.json({ msg: "User with given email not found"});
+      return res.json({ msg: "삭제를 성공하였습니다", beers});
+    } else return res.status(404).json({ msg: "사용자 메일을 찾을 수 없습니다"});
   } catch (error) {
-    return res.json({ msg: "Error removing beer to the liked list"});
+    return res.status(500).json({ msg: "좋아요 목록 삭제 도중 오류가 발생하였습니다"});
   }
 }
