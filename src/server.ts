@@ -4,6 +4,10 @@ import cors from 'cors';
 import userRoutes from "./routes/UserRoutes";
 import { Server, Socket } from 'socket.io';
 import chatRoutes from "./routes/ChatRoutes";
+require('dotenv').config();
+
+const username = process.env.DB_USERNAME;
+const password = process.env.DB_PASSWORD;
 
 const mongoose = require('mongoose');
 
@@ -34,7 +38,7 @@ app.use(cors({
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 
-mongoose.connect('mongodb://127.0.0.1:27017/beerApp', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb+srv://${username}:${password}@my-beer.xbjfgh6.mongodb.net/beerApp`, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('MongoDB 연결 성공');
   })
