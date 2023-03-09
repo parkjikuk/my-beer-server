@@ -38,7 +38,7 @@ app.use(cors({
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 
-mongoose.connect(`mongodb+srv://${username}:${password}@my-beer.xbjfgh6.mongodb.net/beerApp`, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb://paxkk:1234@svc.sel3.cloudtype.app:31179/?authMechanism=DEFAULT", { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('MongoDB 연결 성공');
   })
