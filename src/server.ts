@@ -6,8 +6,7 @@ import { Server, Socket } from 'socket.io';
 import chatRoutes from "./routes/ChatRoutes";
 require('dotenv').config();
 
-const username = process.env.DB_USERNAME;
-const password = process.env.DB_PASSWORD;
+const dbUri = process.env.REACT_APP_MONGODB_URI;
 
 const mongoose = require('mongoose');
 
@@ -43,7 +42,7 @@ app.get("/", (req, res) => {
 });
 
 
-mongoose.connect("mongodb://paxkk:1234@svc.sel3.cloudtype.app:31179/?authMechanism=DEFAULT", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`${dbUri}`, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('MongoDB 연결 성공');
   })
