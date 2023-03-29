@@ -17,6 +17,7 @@ const app = express();
 const port = 5000;
 
 app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}`);
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(cors({
-  origin: `${clientUrl}`,
+  origin: `${process.env.CLIENT_URL}`,
   credentials: true
 }));
 
@@ -69,7 +70,7 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: `${clientUrl}`,
+    origin: `${process.env.CLIENT_URL}`,
     credentials: true
   }
 });
