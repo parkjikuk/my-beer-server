@@ -16,22 +16,9 @@ mongoose.set('strictQuery', false);
 const app = express();
 const port = 5000;
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin",`${process.env.CLIENT_URL}`);
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, my-custom-header"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-});
 app.use(express.json());
 app.use(cors({
-  origin: `${process.env.CLIENT_URL}`,
+  origin: `${clientUrl}`,
   credentials: true
 }));
 
@@ -70,7 +57,7 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: `${process.env.CLIENT_URL}`,
+    origin: `${clientUrl}`,
     credentials: true
   }
 });
