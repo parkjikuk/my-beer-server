@@ -6,7 +6,8 @@ import { Server, Socket } from 'socket.io';
 import chatRoutes from "./routes/ChatRoutes";
 require('dotenv').config();
 
-const dbUri = process.env.REACT_APP_MONGODB_URI;
+const dbUri = process.env.MONGODB_URI;
+const clientUrl = process.env.CLIENT_URL;
 
 const mongoose = require('mongoose');
 
@@ -16,7 +17,7 @@ const app = express();
 const port = 5000;
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", `${clientUrl}`);
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: `${clientUrl}`,
   credentials: true
 }));
 
@@ -69,7 +70,7 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: `${clientUrl}`,
     credentials: true
   }
 });
