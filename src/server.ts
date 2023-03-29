@@ -6,8 +6,8 @@ import { Server, Socket } from 'socket.io';
 import chatRoutes from "./routes/ChatRoutes";
 require('dotenv').config();
 
-const dbUri: string = process.env.MONGODB_URI || '' ;
-const clientUrl: string = process.env.CLIENT_URL || '' ;
+const dbUri: string | undefined = process.env.MONGODB_URI;
+const clientUrl: string | undefined = process.env.CLIENT_URL;
 
 const mongoose = require('mongoose');
 
