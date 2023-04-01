@@ -17,7 +17,7 @@ const app = express();
 const port = 5000;
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://mybeer-78002.web.app");
+  res.setHeader("Access-Control-Allow-Origin", `${clientUrl}`);
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(cors({
-  origin: "https://mybeer-78002.web.app",
+  origin: `${clientUrl}`,
   credentials: true
 }));
 
@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
 });
 
 
-mongoose.connect("mongodb://paxkk:1234@svc.sel3.cloudtype.app:31179/?authMechanism=DEFAULT", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect( `${dbUri}`, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('MongoDB 연결 성공');
   })
@@ -70,7 +70,7 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: "https://mybeer-78002.web.app",
+    origin: `${clientUrl}`,
     credentials: true
   }
 });
